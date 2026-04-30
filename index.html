@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DINOPEDIA</title>
+
+  <style>
+    :root {
+      --egg-bg: #fff7df;
+      --egg-border: #7b5b2e;
+      --text-dark: #2d2416;
+      --green: #4f8f3a;
+      --orange: #f5a623;
+      --cream: #fff4d2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Comic Sans MS", "Trebuchet MS", cursive, sans-serif;
+      color: var(--text-dark);
+      background:
+        linear-gradient(rgba(255, 244, 210, 0.78), rgba(255, 244, 210, 0.78)),
+        url("images/sfondo-dinopedia.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 28px 16px;
+      overflow-x: hidden;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    h1 {
+      display: inline-block;
+      font-size: clamp(3rem, 10vw, 6.5rem);
+      letter-spacing: 4px;
+      color: #2f7d32;
+      text-shadow:
+        4px 4px 0 #fff,
+        7px 7px 0 rgba(0, 0, 0, 0.2);
+      -webkit-text-stroke: 2px #173f1a;
+      margin-bottom: 16px;
+      transform: rotate(-1deg);
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0 auto 28px;
+      padding: 12px 18px;
+      font-size: 1.15rem;
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.78);
+      border: 3px solid rgba(47, 125, 50, 0.55);
+      border-radius: 22px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .alphabet {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin: 0 auto 34px;
+      max-width: 980px;
+    }
+
+    .letter-btn {
+      width: 58px;
+      height: 58px;
+      border: 4px solid #ffffff;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #ffcf5a, #ff9f1c);
+      color: #263b12;
+      font-family: inherit;
+      font-size: 1.9rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow:
+        0 6px 0 #b76512,
+        0 8px 18px rgba(0, 0, 0, 0.25);
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.75);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .letter-btn:hover,
+    .letter-btn:focus-visible {
+      transform: scale(1.22) rotate(-4deg);
+      background: linear-gradient(145deg, #9be15d, #4f8f3a);
+      box-shadow:
+        0 8px 0 #2f5e22,
+        0 12px 24px rgba(0, 0, 0, 0.32);
+      outline: none;
+      z-index: 2;
+    }
+
+    .letter-btn.active {
+      background: linear-gradient(145deg, #f76f8e, #f5a623);
+      transform: scale(1.12);
+    }
+
+    .egg-panel-wrapper {
+      display: flex;
+      justify-content: center;
+      min-height: 500px;
+    }
+
+    .egg-panel {
+      position: relative;
+      width: min(92vw, 520px);
+      min-height: 620px;
+      padding: 74px 42px 48px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.95), transparent 22%),
+        radial-gradient(circle at 68% 35%, rgba(117, 93, 52, 0.12) 0 10px, transparent 11px),
+        radial-gradient(circle at 38% 62%, rgba(117, 93, 52, 0.12) 0 8px, transparent 9px),
+        var(--egg-bg);
+      border: 8px solid var(--egg-border);
+      border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+      box-shadow:
+        inset -18px -28px 0 rgba(116, 82, 37, 0.12),
+        0 20px 36px rgba(0, 0, 0, 0.28);
+      animation: eggAppear 0.35s ease both;
+      overflow: visible;
+    }
+
+    .egg-panel::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 3px dashed rgba(123, 91, 46, 0.26);
+      border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+      pointer-events: none;
+    }
+
+    @keyframes eggAppear {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .dino-image {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      border-radius: 28px;
+      border: 5px solid #ffffff;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+      margin-bottom: 22px;
+      transform: rotate(-1.5deg) scale(1.04);
+      background: #d7f3ff;
+    }
+
+    .dino-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: 4px solid #fff;
+      font-size: 2rem;
+      font-weight: 900;
+      box-shadow: 0 6px 0 #b76512;
+    }
+
+    .dino-name {
+      font-size: clamp(2rem, 8vw, 3.2rem);
+      color: #2f7d32;
+      line-height: 1.05;
+      text-shadow: 2px 2px 0 #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .dino-description {
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+
+    .wiki-link {
+      display: inline-block;
+      padding: 13px 20px;
+      border-radius: 999px;
+      background: #2f7d32;
+      color: white;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 900;
+      border: 4px solid #ffffff;
+      box-shadow: 0 7px 0 #1e4f20;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .wiki-link:hover,
+    .wiki-link:focus-visible {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 10px 0 #1e4f20;
+      outline: none;
+    }
+
+    .empty-message {
+      font-size: 1.4rem;
+      line-height: 1.5;
+      margin-top: 140px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.68);
+      border-radius: 24px;
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      .alphabet {
+        gap: 9px;
+      }
+
+      .letter-btn {
+        width: 47px;
+        height: 47px;
+        font-size: 1.55rem;
+        border-radius: 15px;
+      }
+
+      .egg-panel {
+        min-height: 570px;
+        padding: 62px 28px 42px;
+      }
+
+      .dino-image {
+        max-height: 230px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <h1>DINOPEDIA</h1>
+
+    <p class="subtitle">
+      Clicca una lettera e scopri un dinosauro del piccolo dizionario preistorico!
+    </p>
+
+    <section class="alphabet" id="alphabet" aria-label="Alfabeto dei dinosauri"></section>
+
+    <section class="egg-panel-wrapper" aria-live="polite">
+      <article class="egg-panel" id="dinoPanel">
+        <p class="empty-message">
+          Scegli una lettera qui sopra per aprire l'uovo della Dinopedia 🥚🦖
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const dinosaurs = [
+      {
+        letter: "A",
+        name: "Allosaurus",
+        description: "Un grande predatore del Giurassico, famoso per i denti affilati e l'aspetto feroce.",
+        image: "images/allosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Allosaurus"
+      },
+      {
+        letter: "B",
+        name: "Brachiosaurus",
+        description: "Un gigantesco erbivoro dal collo lunghissimo, perfetto per raggiungere le foglie più alte.",
+        image: "images/brachiosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Brachiosaurus"
+      },
+      {
+        letter: "C",
+        name: "Carnotaurus",
+        description: "Un carnivoro riconoscibile per le sue piccole corna sopra gli occhi.",
+        image: "images/carnotaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Carnotaurus"
+      },
+      {
+        letter: "D",
+        name: "Diplodocus",
+        description: "Un erbivoro enorme con collo e coda lunghissimi, tra i dinosauri più iconici.",
+        image: "images/diplodocus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Diplodocus"
+      },
+      {
+        letter: "E",
+        name: "Eoraptor",
+        description: "Uno dei dinosauri più antichi conosciuti, piccolo e agile, vissuto nel Triassico.",
+        image: "images/eoraptor.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Eoraptor"
+      },
+      {
+        letter: "F",
+        name: "Fukuiraptor",
+        description: "Un dinosauro carnivoro scoperto in Giappone, vissuto nel Cretaceo inferiore.",
+        image: "images/fukuiraptor.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Fukuiraptor"
+      },
+      {
+        letter: "G",
+        name: "Gallimimus",
+        description: "Sembrava uno struzzo preistorico: veloce, leggero e con zampe lunghe.",
+        image: "images/gallimimus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Gallimimus"
+      },
+      {
+        letter: "H",
+        name: "Hadrosaurus",
+        description: "Uno dei famosi dinosauri dal becco d'anatra, importante nella storia della paleontologia.",
+        image: "images/hadrosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Hadrosaurus"
+      },
+      {
+        letter: "I",
+        name: "Iguanodon",
+        description: "Un erbivoro molto conosciuto, con un caratteristico pollice a forma di spuntone.",
+        image: "images/iguanodon.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Iguanodon"
+      },
+      {
+        letter: "J",
+        name: "Juravenator",
+        description: "Un piccolo dinosauro carnivoro scoperto in Germania, vissuto nel Giurassico.",
+        image: "images/juravenator.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Juravenator"
+      },
+      {
+        letter: "K",
+        name: "Kentrosaurus",
+        description: "Parente dello Stegosaurus, aveva placche e spine lungo il dorso e la coda.",
+        image: "images/kentrosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Kentrosaurus"
+      },
+      {
+        letter: "L",
+        name: "Lambeosaurus",
+        description: "Un erbivoro dal becco d'anatra con una cresta particolare sulla testa.",
+        image: "images/lambeosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Lambeosaurus"
+      },
+      {
+        letter: "M",
+        name: "Maiasaura",
+        description: "Il suo nome significa “buona madre lucertola”, perché sono stati trovati nidi e piccoli.",
+        image: "images/maiasaura.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Maiasaura"
+      },
+      {
+        letter: "N",
+        name: "Nodosaurus",
+        description: "Un dinosauro corazzato, coperto da placche ossee per difendersi dai predatori.",
+        image: "images/nodosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Nodosaurus"
+      },
+      {
+        letter: "Ñ",
+        name: "Nhandumirim",
+        description: "Lo usiamo per la Ñ perché il suo nome significa circa “piccolo ñandú”. È un dinosauro reale del Triassico del Brasile.",
+        image: "images/nhandumirim.jpg",
+        wiki: "https://es.wikipedia.org/wiki/Nhandumirim_waldsangae"
+      },
+      {
+        letter: "O",
+        name: "Ornithomimus",
+        description: "Un dinosauro simile a uno struzzo, probabilmente veloce e agile.",
+        image: "images/ornithomimus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Ornithomimus"
+      },
+      {
+        letter: "P",
+        name: "Parasaurolophus",
+        description: "Celebre per la lunga cresta curva sulla testa, forse usata per produrre suoni.",
+        image: "images/parasaurolophus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Parasaurolophus"
+      },
+      {
+        letter: "Q",
+        name: "Quaesitosaurus",
+        description: "Un sauropode erbivoro dal collo lungo, conosciuto grazie a fossili trovati in Mongolia.",
+        image: "images/quaesitosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Quaesitosaurus"
+      },
+      {
+        letter: "R",
+        name: "Rugops",
+        description: "Un dinosauro carnivoro africano dal cranio rugoso, vissuto nel Cretaceo.",
+        image: "images/rugops.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Rugops"
+      },
+      {
+        letter: "S",
+        name: "Stegosaurus",
+        description: "Famosissimo erbivoro con grandi placche sul dorso e spine sulla coda.",
+        image: "images/stegosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Stegosaurus"
+      },
+      {
+        letter: "T",
+        name: "Tyrannosaurus rex",
+        description: "Uno dei predatori più famosi di sempre, potente e gigantesco.",
+        image: "images/tyrannosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Tyrannosaurus"
+      },
+      {
+        letter: "U",
+        name: "Utahraptor",
+        description: "Un grande raptor carnivoro, più grosso del Velociraptor e molto temibile.",
+        image: "images/utahraptor.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Utahraptor"
+      },
+      {
+        letter: "V",
+        name: "Velociraptor",
+        description: "Piccolo, veloce e intelligente: un carnivoro molto famoso grazie al cinema.",
+        image: "images/velociraptor.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Velociraptor"
+      },
+      {
+        letter: "W",
+        name: "Wannanosaurus",
+        description: "Un piccolo dinosauro erbivoro appartenente al gruppo dei pachicefalosauri.",
+        image: "images/wannanosaurus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Wannanosaurus"
+      },
+      {
+        letter: "X",
+        name: "Xenoceratops",
+        description: "Un dinosauro cornuto erbivoro, parente del più famoso Triceratops.",
+        image: "images/xenoceratops.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Xenoceratops"
+      },
+      {
+        letter: "Y",
+        name: "Yutyrannus",
+        description: "Un grande tirannosauroide piumato: una prova spettacolare dei dinosauri con piume.",
+        image: "images/yutyrannus.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Yutyrannus"
+      },
+      {
+        letter: "Z",
+        name: "Zuniceratops",
+        description: "Un dinosauro cornuto erbivoro, importante per capire l'evoluzione dei ceratopsi.",
+        image: "images/zuniceratops.jpg",
+        wiki: "https://en.wikipedia.org/wiki/Zuniceratops"
+      }
+    ];
+
+    const alphabetContainer = document.getElementById("alphabet");
+    const dinoPanel = document.getElementById("dinoPanel");
+
+    function createAlphabet() {
+      dinosaurs.forEach((dino) => {
+        const button = document.createElement("button");
+        button.className = "letter-btn";
+        button.type = "button";
+        button.textContent = dino.letter;
+        button.setAttribute("aria-label", `Mostra dinosauro con la lettera ${dino.letter}`);
+
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".letter-btn").forEach((btn) => {
+            btn.classList.remove("active");
+          });
+
+          button.classList.add("active");
+          showDinosaur(dino);
+        });
+
+        alphabetContainer.appendChild(button);
+      });
+    }
+
+    function showDinosaur(dino) {
+      dinoPanel.innerHTML = `
+        <img class="dino-image" src="${dino.image}" alt="Illustrazione di ${dino.name}" />
+        <div class="dino-letter">${dino.letter}</div>
+        <h2 class="dino-name">${dino.name}</h2>
+        <p class="dino-description">${dino.description}</p>
+        <a class="wiki-link" href="${dino.wiki}" target="_blank" rel="noopener noreferrer">
+          Leggi su Wikipedia
+        </a>
+      `;
+    }
+
+    createAlphabet();
+  </script>
+</body>
+</html>
